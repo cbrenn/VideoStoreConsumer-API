@@ -21,11 +21,17 @@ class MoviesController < ApplicationController
       )
   end
 
-
   def create
     @movie = Movie.new(movie_params)
+    @movie.inventory = 1;
+
     @movie.save!
-    render :create, status: :ok
+    render(
+      status: :ok,
+      json: @movie.as_json(
+        only: [:title, :overview, :release_date, :inventory, :external_id]
+        )
+      )
   end
 
   private
@@ -38,6 +44,6 @@ class MoviesController < ApplicationController
   end
 
   def movie_params
-    params.permit(:id, :title, :overview, :release_date, :inventory)
-  end 
+    params.permit(:id, :title, :overview, :release_date, :inventory, :external_id)
+  end
 end
